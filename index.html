@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Mother's Day, Shizuru</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Noto+Serif+JP:wght@200;300;400&family=Dancing+Script:wght@500;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ocean: #1a6b8a;
+    --ocean-light: #4fa3c4;
+    --sand: #f5e6c8;
+    --coral: #e8735a;
+    --coral-light: #f0a090;
+    --hibiscus: #d94f7a;
+    --hibiscus-light: #f07a9a;
+    --gold: #e8b84b;
+    --leaf: #4a8c5c;
+    --cream: #fdf8f0;
+    --white: #ffffff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 300;
+    background: var(--cream);
+    color: #2a2a2a;
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1600&q=80');
+    background-size: cover;
+    background-position: center 40%;
+    filter: brightness(0.75) saturate(1.2);
+    transform: scale(1.05);
+    animation: slowZoom 20s ease-in-out infinite alternate;
+  }
+  @keyframes slowZoom {
+    from { transform: scale(1.05); }
+    to   { transform: scale(1.12); }
+  }
+
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(0,0,0,0.35) 0%,
+      rgba(10,40,60,0.50) 40%,
+      rgba(0,0,0,0.72) 100%
+    );
+  }
+
+  /* floating petals */
+  .petal {
+    position: absolute;
+    font-size: 1.4rem;
+    opacity: 0;
+    animation: floatPetal var(--dur) ease-in-out infinite var(--delay);
+    pointer-events: none;
+  }
+  @keyframes floatPetal {
+    0%   { opacity: 0; transform: translateY(0) rotate(0deg); }
+    10%  { opacity: 0.7; }
+    90%  { opacity: 0.5; }
+    100% { opacity: 0; transform: translateY(-120px) rotate(180deg) translateX(30px); }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 40px 24px;
+  }
+
+  .hero-tag {
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(1.1rem, 3vw, 1.6rem);
+    color: var(--gold);
+    letter-spacing: 0.05em;
+    opacity: 0;
+    animation: fadeUp 1.2s ease forwards 0.4s;
+    text-shadow: 0 2px 16px rgba(0,0,0,0.7);
+    margin-bottom: 16px;
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3.5rem, 12vw, 9rem);
+    font-weight: 700;
+    color: var(--white);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    text-shadow: 0 4px 30px rgba(0,0,0,0.6), 0 2px 8px rgba(0,0,0,0.5);
+    opacity: 0;
+    animation: fadeUp 1.4s ease forwards 0.7s;
+  }
+  .hero-title em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--hibiscus-light);
+    display: block;
+  }
+
+  .hero-name {
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(2rem, 6vw, 4rem);
+    color: var(--sand);
+    margin-top: 12px;
+    letter-spacing: 0.05em;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.7);
+    opacity: 0;
+    animation: fadeUp 1.4s ease forwards 1s;
+  }
+
+  .hero-flowers {
+    font-size: 2rem;
+    margin: 24px 0;
+    letter-spacing: 0.3em;
+    opacity: 0;
+    animation: fadeIn 1.5s ease forwards 1.3s;
+  }
+
+  .hero-intro {
+    max-width: 520px;
+    margin: 0 auto;
+    font-size: clamp(0.9rem, 1.8vw, 1.05rem);
+    line-height: 2;
+    color: rgba(255,255,255,0.97);
+    font-style: italic;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.8);
+    opacity: 0;
+    animation: fadeUp 1.4s ease forwards 1.5s;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(255,255,255,0.6);
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    z-index: 2;
+    opacity: 0;
+    animation: fadeIn 2s ease forwards 2.5s;
+  }
+  .scroll-hint::after {
+    content: '';
+    width: 1px; height: 36px;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.6), transparent);
+    animation: scrollDrop 2s ease-in-out infinite;
+  }
+  @keyframes scrollDrop {
+    0%,100% { opacity: 0; transform: scaleY(0); transform-origin: top; }
+    40%     { opacity: 1; transform: scaleY(1); transform-origin: top; }
+    60%     { opacity: 1; transform: scaleY(1); transform-origin: bottom; }
+    99%     { opacity: 0; transform: scaleY(0); transform-origin: bottom; }
+  }
+
+  /* ── WAVE DIVIDER ── */
+  .wave {
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+    margin-top: -2px;
+  }
+  .wave svg { display: block; width: 100%; }
+
+  /* ── SECTION BASE ── */
+  section {
+    position: relative;
+    padding: 80px 32px;
+    max-width: 740px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.1rem;
+    color: var(--hibiscus);
+    text-align: center;
+    margin-bottom: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+  }
+  .section-label::before,
+  .section-label::after {
+    content: '🌺';
+    font-size: 0.9rem;
+  }
+
+  /* ── MESSAGE BLOCKS ── */
+  .message-block {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.9s ease, transform 0.9s ease;
+    margin-bottom: 48px;
+  }
+  .message-block.visible { opacity: 1; transform: translateY(0); }
+
+  .message-block p {
+    font-size: clamp(0.95rem, 1.9vw, 1.08rem);
+    line-height: 2.3;
+    color: #111111;
+    font-weight: 400;
+    margin-bottom: 1.2em;
+  }
+
+  .message-block p.big {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.4rem, 3.5vw, 2.1rem);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--ocean);
+    line-height: 1.55;
+    margin-bottom: 1em;
+  }
+
+  /* ── CHICAGO PANEL ── */
+  .chicago-panel {
+    position: relative;
+    overflow: hidden;
+    background-image: url('https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1200&q=80');
+    background-size: cover;
+    background-position: center;
+    padding: 100px 32px;
+    text-align: center;
+  }
+  .chicago-panel::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(10,60,90,0.82), rgba(160,40,90,0.72));
+  }
+  .chicago-inner { position: relative; z-index: 1; }
+
+  .chicago-tag {
+    font-family: 'Lato', sans-serif;
+    font-weight: 400;
+    font-size: 0.85rem;
+    letter-spacing: 0.5em;
+    color: #ffe8b0;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    opacity: 1;
+    text-shadow: 0 1px 8px rgba(0,0,0,0.6);
+  }
+  .chicago-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 7vw, 5rem);
+    font-style: italic;
+    color: white;
+    line-height: 1.2;
+    margin-bottom: 20px;
+    text-shadow: 0 3px 24px rgba(0,0,0,0.6), 0 1px 6px rgba(0,0,0,0.5);
+  }
+  .chicago-sub {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 300;
+    font-size: clamp(0.9rem, 1.8vw, 1rem);
+    color: rgba(255,255,255,0.97);
+    line-height: 2.2;
+    text-shadow: 0 1px 8px rgba(0,0,0,0.6);
+  }
+
+  /* ── RESPECT SECTION ── */
+  .respect-section {
+    background: linear-gradient(135deg, #fff9f2 0%, #fef0e8 100%);
+    padding: 80px 32px;
+  }
+
+  .respect-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+    gap: 16px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .respect-card {
+    background: white;
+    border-radius: 16px;
+    padding: 28px 24px;
+    box-shadow: 0 4px 20px rgba(217,79,122,0.08), 0 1px 4px rgba(0,0,0,0.05);
+    border-top: 3px solid var(--hibiscus-light);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease, box-shadow 0.3s ease;
+    cursor: default;
+  }
+  .respect-card.visible { opacity: 1; transform: translateY(0); }
+  .respect-card:hover {
+    box-shadow: 0 8px 32px rgba(217,79,122,0.16), 0 2px 8px rgba(0,0,0,0.08);
+    transform: translateY(-3px);
+  }
+
+  .card-num {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 2rem;
+    color: var(--hibiscus);
+    opacity: 0.7;
+    line-height: 1;
+    margin-bottom: 10px;
+  }
+  .card-text {
+    font-size: 0.95rem;
+    line-height: 1.85;
+    color: #2a2a2a;
+    font-weight: 400;
+  }
+
+  /* ── QUOTE PANEL ── */
+  .quote-panel {
+    position: relative;
+    overflow: hidden;
+    background-image: url('https://images.unsplash.com/photo-1504701954957-2010ec3bcec1?w=1200&q=80');
+    background-size: cover;
+    background-position: center 60%;
+    padding: 120px 32px;
+    text-align: center;
+  }
+  .quote-panel::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0,20,40,0.70);
+  }
+  .quote-inner { position: relative; z-index: 1; }
+
+  .quote-flowers { font-size: 2.2rem; letter-spacing: 0.5em; margin-bottom: 32px; }
+
+  .quote-main {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.6rem, 4.5vw, 3.2rem);
+    font-style: italic;
+    color: white;
+    line-height: 1.55;
+    max-width: 680px;
+    margin: 0 auto 32px;
+    text-shadow: 0 2px 24px rgba(0,0,0,0.7);
+  }
+  .quote-main .accent { color: #ffd060; }
+  .quote-main .accent2 { color: #ffaac8; }
+
+  .quote-sub {
+    font-size: 0.85rem;
+    letter-spacing: 0.3em;
+    color: rgba(255,255,255,0.75);
+    text-transform: uppercase;
+  }
+
+  /* ── CLOSING ── */
+  .closing {
+    background: linear-gradient(160deg, #fff6f0 0%, #fde8d8 50%, #fff0f4 100%);
+    padding: 100px 32px 120px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .closing::before {
+    content: '🌺';
+    position: absolute;
+    top: -20px; left: -20px;
+    font-size: 10rem;
+    opacity: 0.05;
+    transform: rotate(-30deg);
+    pointer-events: none;
+  }
+  .closing::after {
+    content: '🌺';
+    position: absolute;
+    bottom: -20px; right: -20px;
+    font-size: 10rem;
+    opacity: 0.05;
+    transform: rotate(150deg);
+    pointer-events: none;
+  }
+
+  .closing-tag {
+    font-family: 'Lato', sans-serif;
+    font-weight: 400;
+    font-size: 0.8rem;
+    letter-spacing: 0.5em;
+    color: var(--hibiscus);
+    text-transform: uppercase;
+    opacity: 1;
+    margin-bottom: 36px;
+  }
+
+  .closing-divider {
+    width: 80px; height: 2px;
+    background: linear-gradient(to right, var(--coral-light), var(--hibiscus), var(--coral-light));
+    margin: 0 auto 40px;
+    border-radius: 2px;
+  }
+
+  .closing-main {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 9vw, 7rem);
+    font-weight: 700;
+    color: var(--ocean);
+    line-height: 1.05;
+    margin-bottom: 16px;
+  }
+  .closing-main em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--hibiscus);
+    display: block;
+  }
+
+  .closing-body {
+    font-size: clamp(0.9rem, 1.8vw, 1.05rem);
+    line-height: 2.3;
+    color: #3a3030;
+    max-width: 500px;
+    margin: 36px auto 48px;
+  }
+
+  .hearts {
+    font-size: 2.2rem;
+    letter-spacing: 0.4em;
+    animation: heartbeat 2.5s ease-in-out infinite;
+  }
+  @keyframes heartbeat {
+    0%,100% { transform: scale(1); }
+    15% { transform: scale(1.18); }
+    30% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    65% { transform: scale(1); }
+  }
+
+  .signature {
+    margin-top: 60px;
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.5rem;
+    color: var(--coral);
+    opacity: 0.9;
+  }
+
+  .mahalo {
+    margin-top: 12px;
+    font-family: 'Dancing Script', cursive;
+    font-size: 2.5rem;
+    color: var(--hibiscus);
+    font-weight: 700;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    section { padding: 60px 20px; }
+    .respect-grid { grid-template-columns: 1fr; }
+    .chicago-panel, .quote-panel { padding: 80px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══ HERO ═══ -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+
+  <!-- floating flower petals -->
+  <div class="petal" style="left:10%;bottom:20%;--dur:6s;--delay:0s">🌸</div>
+  <div class="petal" style="left:25%;bottom:10%;--dur:7s;--delay:1s">🌺</div>
+  <div class="petal" style="left:55%;bottom:15%;--dur:5.5s;--delay:2s">🌸</div>
+  <div class="petal" style="left:75%;bottom:25%;--dur:8s;--delay:0.5s">🌺</div>
+  <div class="petal" style="left:85%;bottom:10%;--dur:6.5s;--delay:3s">🌸</div>
+
+  <div class="hero-content">
+    <p class="hero-tag">Mother's Day 2026 · 25th Year</p>
+    <h1 class="hero-title">
+      Happy<br><em>Mother's</em><br>Day
+    </h1>
+    <p class="hero-name">Shizuru</p>
+    <div class="hero-flowers">🌺 🌸 🌺</div>
+    <p class="hero-intro">
+      本当に本当に、ありがとう。<br>
+      Alohaにこの世界での命を与えてくれたこと。<br>
+      25年間、その小さな命を心優しく、<br>芯のある女性へと育て上げてくれたこと。
+    </p>
+  </div>
+  <div class="scroll-hint">scroll</div>
+</div>
+
+<!-- wave -->
+<div class="wave">
+  <svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,30 C360,60 1080,0 1440,30 L1440,60 L0,60 Z" fill="#fdf8f0"/>
+  </svg>
+</div>
+
+<!-- ═══ MESSAGE 1 ═══ -->
+<section>
+  <div class="section-label">はじめに</div>
+  <div class="message-block">
+    <p class="big">ぼくが「父親」でいられたのは、志鶴がいたから。</p>
+    <p>正直に言えば、99%どころか、すべてと言ってもいいかもしれない。</p>
+    <p>Alohaが今、しっかりとした自己肯定感を持って生きているのは——志鶴の背中を見てきたから。志鶴の声援を受けてきたから。志鶴の愛の中で育ってきたから。</p>
+  </div>
+</section>
+
+<!-- ═══ CHICAGO ═══ -->
+<div class="chicago-panel">
+  <div class="chicago-inner">
+    <p class="chicago-tag">Chicago · Mother's Day 2026</p>
+    <h2 class="chicago-title">今年の母の日は<br>シカゴで</h2>
+    <p class="chicago-sub">
+      ライチとZanziが加わって、<br>
+      三人の子供たちに囲まれて。<br>
+      その景色を想像しただけで、胸が温かくなる。
+    </p>
+  </div>
+</div>
+
+<!-- ═══ MESSAGE 2 ═══ -->
+<section>
+  <div class="section-label">29年、変わらないもの</div>
+  <div class="message-block">
+    <p class="big">結婚29年。今、いろいろあって、こんな状況だけれど——志鶴へのリスペクトは、微塵も変わらない。</p>
+    <p>むしろ、時間が経つほどに、深くなる一方だ。</p>
+  </div>
+</section>
+
+<!-- ═══ QUALITIES GRID ═══ -->
+<div class="respect-section">
+  <div class="section-label">志鶴という人</div>
+  <div class="respect-grid">
+    <div class="respect-card">
+      <div class="card-num">01</div>
+      <div class="card-text">物事をぶれずに捉える強さ。決めたことは必ずやり遂げる意志。</div>
+    </div>
+    <div class="respect-card">
+      <div class="card-num">02</div>
+      <div class="card-text">大切なことには全力で向き合い、そうでないことには惑わされない潔さ。</div>
+    </div>
+    <div class="respect-card">
+      <div class="card-num">03</div>
+      <div class="card-text">「No」をはっきりと言える勇気。</div>
+    </div>
+    <div class="respect-card">
+      <div class="card-num">04</div>
+      <div class="card-text">笑顔と笑いで、周りの人みんなを明るく照らすこと。</div>
+    </div>
+    <div class="respect-card">
+      <div class="card-num">05</div>
+      <div class="card-text">季節を感じさせるように、家という空間に温もりをつくること。</div>
+    </div>
+    <div class="respect-card">
+      <div class="card-num">06</div>
+      <div class="card-text">どんな困難も笑い飛ばせる、あの底抜けの強さ。</div>
+    </div>
+    <div class="respect-card">
+      <div class="card-num">07</div>
+      <div class="card-text">2000マイル離れていても、Alohaのためなら一睡もせずに車を走らせられる、その気持ち。</div>
+    </div>
+    <div class="respect-card">
+      <div class="card-num">08</div>
+      <div class="card-text">美味しい料理と、いつもちょっとした驚きや刺激で、みんなを楽しませてくれること。</div>
+    </div>
+    <div class="respect-card">
+      <div class="card-num">09</div>
+      <div class="card-text">Alohaの一番の友達でいられること。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ QUOTE (OCEAN BG) ═══ -->
+<div class="quote-panel">
+  <div class="quote-inner">
+    <div class="quote-flowers">🌺 🌸 🌺</div>
+    <p class="quote-main">
+      もしこのリスペクトを全部、<br>
+      夜空の星にしたら——<br>
+      <span class="accent">それだけで</span> <span class="accent2">天の川になるよ</span>
+    </p>
+    <p class="quote-sub">Milky Way of Respect</p>
+  </div>
+</div>
+
+<!-- ═══ CLOSING ═══ -->
+<div class="closing">
+  <p class="closing-tag">25th Mother's Day</p>
+  <div class="closing-divider"></div>
+
+  <h2 class="closing-main">
+    ありがとう、
+    <em>志鶴</em>
+  </h2>
+
+  <p class="closing-body">
+    25回目の母の日。<br>
+    ぼくの馬鹿さ加減のせいで、こんなメッセージを受け取ること自体、クレイジーに感じるかもしれない。<br><br>
+    それでも——「ありがとう」だけは、伝えたかった。<br><br>
+    これからも、Alohaの大切なお母さんでいてください。
+  </p>
+
+  <div class="hearts">🌺 🌸 🌺</div>
+
+  <div class="signature">with all my respect & love</div>
+  <div class="mahalo">Mahalo, Shizuru 🌺</div>
+</div>
+
+<script>
+  // scroll reveal
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 100);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.message-block, .respect-card').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
